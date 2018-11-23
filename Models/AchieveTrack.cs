@@ -11,7 +11,7 @@ namespace AchievementTracker.Models{
 
         //DATABASE CONNECTIVITY VARIABLES
         private MySqlConnection dbConnection;
-        //private static string connectionString = "Database=dotnetcoreSamples;Data Source=localhost;User Id=root;Password=stnrtch!1;SslMode=None;";
+        //private static string connectionString = "Database=dotnetcoreSamples;Data Source=localhost;User Id=root;Password=password;SslMode=None;";
         private static string connectionString = "Database=[dbName];Data Source=localhost;User Id=root;Password=[yourPassword];SslMode=None;";
         private MySqlCommand dbCommand;
         private MySqlDataReader dbReader;

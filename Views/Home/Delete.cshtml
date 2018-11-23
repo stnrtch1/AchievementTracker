@@ -1,0 +1,22 @@
+@model AchievementTracker.Models.AchieveTrack
+@using AchievementTracker.Models
+
+<div class="row" style="margin-bottom:20px;">
+    <div class="col-sm-12">
+        <h4>Delete Game</h4>
+        <div style="margin-bottom:10px">Select the game you wish to delete:</div>
+        
+        <form method="post">
+
+            <div class="form-group">
+                <select id="lstGames" asp-for="gameID" asp-items="AchieveTrack.getList()" class="btn btn-default form-control" style="max-width: 300px !important;"></select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" asp-controller="Home" asp-action="DeleteSubmit" class="btn btn-danger" value="Delete" />
+                <input type="submit" asp-controller="Home" asp-action="Index" class="btn btn-primary" value="Cancel" />
+            </div>
+        </form>
+
+    </div>
+</div>

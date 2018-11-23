@@ -1,0 +1,33 @@
+@model AchievementTracker.Models.AchieveTrack
+
+<div class="row">
+    <div class="col-sm-12 well">
+        <form method="post">
+
+            <input type="hidden" asp-for="gameID" value="@Model.selectedGame.gameID" />
+
+            <h3>Edit Game:</h3>
+            <div class="form-group">
+                <label for="txtName">Game Name:</label>
+                <div class="form-control" style="max-width:200px;color:#BBBBBB">@Model.selectedGame.name</div>
+            </div>
+            <div class="form-group">
+                <label for="txtEarned">Achievements Earned:</label>
+                <input id="txtEarned" asp-for="achievementsEarned" value="@Model.selectedGame.achievementsEarned" maxlength="5" type="number" class="form-control" />
+                <h5>You know the drill, only I'm assuming you at least got one this time</h5>
+            </div>
+            <div class="form-group">
+                <label for="txtMax">Max Achievements:</label>
+                <input id="txtMax" asp-for="maxAchievements" value="@Model.selectedGame.maxAchievements" maxlength="5" type="number" class="form-control" />
+                <h5>Whatever you do, don't set this lower than the earned achievements. I already told you this, but still.</h5>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-success" asp-action="EditSubmit" asp-controller="Home">Submit Game</button>
+                <button type="submit" class="btn btn-primary" asp-action="Index" asp-controller="Home">Cancel</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

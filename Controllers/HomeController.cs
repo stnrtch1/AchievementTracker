@@ -21,28 +21,26 @@ namespace AchievementTracker.Controllers{
 
         [HttpPost]
         public IActionResult AddSubmit(AchieveTrack achieveTrack){
-            //check if form fields are valid
-            //ERRORCHECK 1: Name is not null
-            if (achieveTrack.name != null){
-                //ERRORCHECK 2: Achievements Earned Are Above Or Zero 
-                if (achieveTrack.achievementsEarned >= 0){
-                    //ERRORCHECK 3: Achievement Earned Are Below Or Equal To The Max Count
-                    if (achieveTrack.achievementsEarned <= achieveTrack.maxAchievements){
-                        //ERRORCHECK 4: Max Achievments Are Above Zero
-                        if (achieveTrack.maxAchievements > 0){
-                            //All fields have passed, submit the game
-                            bool result = achieveTrack.submit();
-                            if (result == true){
-                                //Game has been submitted
-                                TempData["feedback"] = "Game has been submitted";
-                            } else{
-                                //GAME HAS FAILED SUBMISSION
-                                TempData["feedback"] = "ERROR: GAME FAILED TO SUBMIT!!";
-                            }
-                        } else{ TempData["feedback"] = "ERROR: MAX ACHIEVEMENTS CAN NOT BE BELOW OR AT ZERO"; }
-                    } else{ TempData["feedback"] = "ERROR: ACHIEVEMENTS EARNED CAN NOT BE MORE THAN MAX ACHIEVEMENTS";}
-                } else{ TempData["feedback"] = "ERROR: ACHIEVEMENTS EARNED CAN NOT BE BELOW ZERO"; }
-            } else{ TempData["feedback"] = "ERROR: NO NAME SUBMITTED"; }
+            //check if the model state is still valid
+            if(!ModelState.IsValid) return View("index");
+
+            //check if the user has more achievements Earned than Max Achievements
+            if (achieveTrack.achievementsEarned > achieveTrack.maxAchievements){
+                //if they did, notify them and keep them on the view
+                TempData["feedback"] = "HEY! What did I say about putting more achievements earned than max achievements.";
+                return View("Add");
+            }
+
+            //All fields have passed, submit the game
+            bool result = achieveTrack.submit();
+            if (result == true){
+                //Game has been submitted
+                TempData["feedback"] = "Game has been submitted";
+            } else{
+                //GAME HAS FAILED SUBMISSION
+                TempData["feedback"] = "ERROR: GAME FAILED TO SUBMIT!!";
+            }
+                        
         
             return RedirectToAction("Index",achieveTrack);
         }
@@ -54,6 +52,9 @@ namespace AchievementTracker.Controllers{
 
         [HttpPost]
         public IActionResult DeleteSubmit(AchieveTrack achieveTrack){
+            //check if the model state is still valid
+            //if(!ModelState.IsValid) return View("index");
+
             //grab the dropdown data and delete the game
             achieveTrack.delete();
             return RedirectToAction("Index",achieveTrack);
@@ -69,27 +70,30 @@ namespace AchievementTracker.Controllers{
 
         [HttpPost]
         public IActionResult EditSubmit(AchieveTrack achieveTrack){
-            Console.WriteLine("\n\n>>Editing Game: " + achieveTrack.gameID + "\n\n");
+            //check if the model state is still valid
+            //if(!ModelState.IsValid) return View("index");
 
-            //check if form fields are valid
-            //ERRORCHECK 1: Achievements Earned Are Above Or Zero 
-            if (achieveTrack.achievementsEarned >= 0){
-                //ERRORCHECK 2: Achievement Earned Are Below Or Equal To The Max Count
-                if (achieveTrack.achievementsEarned <= achieveTrack.maxAchievements){
-                    //ERRORCHECK 3: Max Achievments Are Above Zero
-                    if (achieveTrack.maxAchievements > 0){
-                        //All fields have passed, submit the game
-                        bool result = achieveTrack.editSubmit();
-                        if (result == true){
-                            //Game has been edited
-                            TempData["feedback"] = "Game has been edited";
-                        } else{
-                            //GAME HAS FAILED EDITING
-                            TempData["feedback"] = "ERROR: GAME FAILED TO EDIT!!";
-                        }
-                    } else{ TempData["feedback"] = "ERROR: MAX ACHIEVEMENTS CAN NOT BE BELOW OR AT ZERO"; }
-                } else{ TempData["feedback"] = "ERROR: ACHIEVEMENTS EARNED CAN NOT BE MORE THAN MAX ACHIEVEMENTS";}
-            } else{ TempData["feedback"] = "ERROR: ACHIEVEMENTS EARNED CAN NOT BE BELOW ZERO"; }
+            //Console.WriteLine("\n\n>>Editing Game: " + achieveTrack.gameID + "\n\n");
+
+            //check if the user has more achievements Earned than Max Achievements
+            if (achieveTrack.achievementsEarned > achieveTrack.maxAchievements){
+                //if they did, notify them and keep them on the view
+                TempData["feedback"] = "HEY! What did I say about putting more achievements earned than max achievements.";
+                string gameID = achieveTrack.gameID.ToString();
+                achieveTrack.editGet();
+                return View("Edit",achieveTrack);
+            }
+
+            //All fields have passed, submit the game
+            bool result = achieveTrack.editSubmit();
+            if (result == true){
+                //Game has been edited
+                TempData["feedback"] = "Game has been edited";
+            } else{
+                //GAME HAS FAILED EDITING
+                TempData["feedback"] = "ERROR: GAME FAILED TO EDIT!!";
+            }
+                    
             
             return RedirectToAction("Index",achieveTrack);
         }

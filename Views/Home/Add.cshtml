@@ -8,17 +8,22 @@
             <div class="form-group">
                 <label for="txtName">Game Name:</label>
                 <input id="txtCourse" asp-for="name" maxlength="100" type="text" class="form-control" />
+                <span asp-validation-for="name" class="text-danger" />
             </div>
             <div class="form-group">
                 <label for="txtEarned">Achievements Earned:</label>
-                <input id="txtEarned" asp-for="achievementsEarned" maxlength="5" type="number" class="form-control" />
+                <input id="txtEarned" asp-for="achievementsEarned" maxlength="5" type="number" min="0" value="0" class="form-control" />
                 <h5>If you didn't earned any achievements yet, just leave this at zero</h5>
+                <span asp-validation-for="achievementsEarned" class="text-danger" />
             </div>
             <div class="form-group">
                 <label for="txtMax">Max Achievements:</label>
-                <input id="txtMax" asp-for="maxAchievements" maxlength="5" type="number" class="form-control" />
+                <input id="txtMax" asp-for="maxAchievements" maxlength="5" type="number" min="0" value="0" class="form-control" />
                 <h5>Whatever you do, don't set this lower than the earned achievements. Something bad will happen if you do</h5>
+                <span asp-validation-for="maxAchievements" class="text-danger" />
             </div>
+
+            <div class="text-danger">@TempData["feedback"]</div>
 
             <div class="form-group">
                 <button type="submit" class="btn btn-success" asp-action="AddSubmit" asp-controller="Home">Submit Game</button>
